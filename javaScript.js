@@ -18,8 +18,13 @@ async function Halo() {
         tr += '<td id="snameProp">' + property + '</td>';
         i += 1;                   
         for(prop in obj[property]){
-            tr += '<td>' + obj[property][prop] + '</td>';
             o += 1;
+            if( o === 2){
+                tr += '<td class = "fname">' + obj[property][prop] + '</td>';
+                console.log('Halo');
+                continue;
+            }
+            tr += '<td>' + obj[property][prop] + '</td>';
             if(o === 6){
                 break;
             };            
@@ -30,25 +35,36 @@ async function Halo() {
         $('#painting > tbody:last-child').append(tr);
     }
 
-        $('button').click(function(){
-            console.log($(this));
-            let $this = $(this);
-            let str = $(this).text();
-            let deleted = str.split([' ']);  
+    $('button').click(function(){
+        console.log($(this));
+        let $this = $(this);
+        let str = $(this).text();
+        let deleted = str.split([' ']);  
 
-            console.log(deleted[1]);
+        console.log(deleted[1]);
 
-            for (property in obj) {
-                if(property == deleted[1]){
-                    console.log("Halo");
-                    delete property[deleted[1]];
-                    console.log(property);
-                    break;
-                }                            
-            }
-            
-            $(this).parents('tr').remove();
-        }); 
+        for (property in obj) {
+            if(property == deleted[1]){
+                console.log("Halo");
+                delete property[deleted[1]];
+                console.log(property);
+                break;
+            }                            
+        }
+        
+        $(this).parents('tr').remove();
+    }); 
+
+    $(function(){
+        $("#myInput").on("keyup", function() {
+          let value = $(this).val().toLowerCase();
+          $("#painting tr").filter(function() {
+            $(this).toggle($(this).children('.fname').text().toLowerCase().indexOf(value) > -1);
+            console.log($(this).text());
+          });
+        });
+    });
+
 }
 
 Halo();
